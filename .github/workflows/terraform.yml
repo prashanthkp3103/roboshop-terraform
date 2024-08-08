@@ -37,11 +37,11 @@ jobs:
     needs: QA
     steps:
       - name: Dummy UAT
-        run: Just Dummy
+        run: echo Just Dummy
 
   PROD:
     runs-on: ubuntu-latest
     needs: UAT
     steps:
       - name: Dummy Prod
-        run: Just Dummy
+        run: echo Just Dummy
