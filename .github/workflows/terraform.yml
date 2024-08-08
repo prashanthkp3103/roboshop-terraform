@@ -25,7 +25,9 @@ jobs:
 
   Dev-Apply:
     #runs-on: ubuntu-latest
+    needs: Dev-Plan
     runs-on: self-hosted
+    environment: dev
     #    runs-on:
     #      group: Default
     steps:
