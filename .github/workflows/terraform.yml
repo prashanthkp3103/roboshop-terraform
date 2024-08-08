@@ -10,7 +10,7 @@ on: [push, workflow_dispatch]
 
 
 jobs:
-  Dev:
+  Dev-Plan:
     #runs-on: ubuntu-latest
     runs-on: self-hosted
     #    runs-on:
@@ -22,6 +22,8 @@ jobs:
       #          node-version: '20'
       - name: Terraform init
         run: terraform init -backend-config=env-dev/state.tfvars
+      - name: Terraform plan
+        run: terraform plan -var-filename=env-dev/main.tfvars
 
 
 
