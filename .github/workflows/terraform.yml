@@ -42,23 +42,23 @@ jobs:
 
 
 
-  QA:
-    runs-on: self-hosted
-    needs: Dev
-    steps:
-      - name: Dummy QA
-        run: echo dummy job
-
-  UAT:
-    runs-on: self-hosted
-    needs: QA
-    steps:
-      - name: Dummy UAT
-        run: echo Just Dummy
-
-  PROD:
-    runs-on: ubuntu-latest
-    needs: UAT
-    steps:
-      - name: Dummy Prod
-        run: echo Just Dummy
+#  QA:
+#    runs-on: self-hosted
+#    needs: Dev
+#    steps:
+#      - name: Dummy QA
+#        run: echo dummy job
+#
+#  UAT:
+#    runs-on: self-hosted
+#    needs: QA
+#    steps:
+#      - name: Dummy UAT
+#        run: echo Just Dummy
+#
+#  PROD:
+#    runs-on: ubuntu-latest
+#    needs: UAT
+#    steps:
+#      - name: Dummy Prod
+#        run: echo Just Dummy
