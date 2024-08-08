@@ -25,20 +25,20 @@ jobs:
       - name: Terraform plan
         run: terraform plan -var-filename=env-dev/main.tfvars
 
-    Dev-Apply:
-      #runs-on: ubuntu-latest
-      runs-on: self-hosted
-      #    runs-on:
-      #      group: Default
-      steps:
-        - uses: actions/checkout@v4
-        #      - uses: actions/setup-node@v4
-        #        with:
-        #          node-version: '20'
-        - name: Terraform init
-          run: terraform init -backend-config=env-dev/state.tfvars
-        - name: Terraform Apply
-          run: terraform apply -var-filename=env-dev/main.tfvars
+  Dev-Apply:
+    #runs-on: ubuntu-latest
+    runs-on: self-hosted
+    #    runs-on:
+    #      group: Default
+    steps:
+      - uses: actions/checkout@v4
+      #      - uses: actions/setup-node@v4
+      #        with:
+      #          node-version: '20'
+      - name: Terraform init
+        run: terraform init -backend-config=env-dev/state.tfvars
+      - name: Terraform Apply
+        run: terraform apply -var-filename=env-dev/main.tfvars
 
 
 
