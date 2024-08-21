@@ -37,7 +37,7 @@ jobs:
         run: terraform init -backend-config=env-dev/state.tfvars
 
       - name: Terraform Apply
-        run: terraform apply -var-file=env-dev/main.tfvars
+        run: terraform apply -auto approve -var-file=env-dev/main.tfvars
 
 
 
