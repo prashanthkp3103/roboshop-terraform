@@ -20,24 +20,26 @@ jobs:
 
       - name: Terraform init
         run: terraform init -backend-config=env-dev/state.tfvars
-      - name: Terraform plan
-        run: terraform plan -var-file=env-dev/main.tfvars
-
-  Dev-Apply:
-    #runs-on: ubuntu-latest
-    #needs: Dev-Plan
-    runs-on: self-hosted
-    environment: dev
-    #    runs-on:
-    #      group: Default
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Terraform init
-        run: terraform init -backend-config=env-dev/state.tfvars
-
+#      - name: Terraform plan
+#        run: terraform plan -var-file=env-dev/main.tfvars
       - name: Terraform apply
-        run: terraform apply -var-file=env-dev/main.tfvars -auto-approve
+        run: terraform destroy -var-file=env-dev/main.tfvars -auto-approve
+
+#  Dev-Apply:
+#    #runs-on: ubuntu-latest
+#    needs: Dev-Plan
+#    runs-on: self-hosted
+#    environment: dev
+#    #    runs-on:
+#    #      group: Default
+#    steps:
+#      - uses: actions/checkout@v4
+#
+#      - name: Terraform init
+#        run: terraform init -backend-config=env-dev/state.tfvars
+#
+#      - name: Terraform apply
+#        run: terraform apply -var-file=env-dev/main.tfvars -auto-approve
 
 
 
