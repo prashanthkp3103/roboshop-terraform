@@ -23,7 +23,7 @@ jobs:
 #      - name: Terraform plan
 #        run: terraform plan -var-file=env-dev/main.tfvars
       - name: Terraform apply
-        run: terraform destroy -var-file=env-dev/main.tfvars -auto-approve
+        run: terraform apply -var-file=env-dev/main.tfvars -auto-approve
 
 #  Dev-Apply:
 #    #runs-on: ubuntu-latest
