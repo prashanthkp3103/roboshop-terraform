@@ -50,3 +50,14 @@ resource "aws_subnet" "public" {
     Name = "public-subnets"
   }
 }
+
+#Route table
+resource "aws_route_table" "public" {
+  count = length(var.public_subnets)
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "public-rt"
+  }
+}
+
