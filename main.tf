@@ -21,8 +21,8 @@ module "ec2" {
   for_each = var.ec2
   name = each.key
   instance_type = each.value["instance_type"]
-  allow_port = each.value["app_port"]
-  allow_sg_cidr = each.value["app_sg_cidr"]
+  allow_port = each.value["allow_port"]
+  allow_sg_cidr = each.value["allow_sg_cidr"]
   #below value comes from vpc module outputs
   subnet      = module.vpc.subnets["web"][0]
   #below value comes from vpc module outputs

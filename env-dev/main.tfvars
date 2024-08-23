@@ -3,7 +3,7 @@ env = "dev"
 
 #list
 #workstation private ip, 32 meaning 1 machine
-bastion_node = [172.31.16.106/32]
+bastion_node = ["172.31.16.106/32"]
 
 #this is map variable
 vpc = {
