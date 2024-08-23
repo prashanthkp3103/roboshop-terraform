@@ -55,11 +55,18 @@ resource "aws_subnet" "public" {
 resource "aws_route_table" "public" {
   count = length(var.public_subnets)
   vpc_id = aws_vpc.main.id
+
 #below route is to have igw
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.igw.id
   }
+#below route is for peering
+  route {
+    cidr_block = var.default_vpc_cidr
+    vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
+  }
+
 
   tags = {
     Name = "public-rt-${split("-", var.availability_zones[count.index])[2]}"
@@ -75,6 +82,13 @@ resource "aws_route_table" "web" {
     nat_gateway_id = aws_nat_gateway.ngw.*.id[count.index]
   }
 
+  #below route is for peering
+  route {
+    cidr_block = var.default_vpc_cidr
+    vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
+  }
+
+
   tags = {
     Name = "web-rt-${split("-", var.availability_zones[count.index])[2]}"
   }
@@ -89,6 +103,13 @@ resource "aws_route_table" "app" {
     nat_gateway_id = aws_nat_gateway.ngw.*.id[count.index]
   }
 
+  #below route is for peering
+  route {
+    cidr_block = var.default_vpc_cidr
+    vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
+  }
+
+
   tags = {
     Name = "app-rt-${split("-", var.availability_zones[count.index])[2]}"
   }
@@ -102,6 +123,13 @@ resource "aws_route_table" "db" {
     cidr_block = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.ngw.*.id[count.index]
   }
+
+  #below route is for peering
+  route {
+    cidr_block = var.default_vpc_cidr
+    vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
+  }
+
 
   tags = {
     Name = "db-rt-${split("-", var.availability_zones[count.index])[2]}"
@@ -160,8 +188,13 @@ resource "aws_nat_gateway" "ngw" {
     Name = "NAT-GW--${split("-", var.availability_zones[count.index])[2]}"
   }
 
-  # To ensure proper ordering, it is recommended to add an explicit dependency
-  # on the Internet Gateway for the VPC.
+}
 
+#vpc peering from workstation to roboshop as we want to have bastion from workstation
+resource "aws_vpc_peering_connection" "peering" {
+  #peer_owner_id = var.peer_owner_id #this is my account and this is optional
+  peer_vpc_id   = aws_vpc.main.id # target
+  vpc_id        = var.default_vpc_id #request vpc
+  auto_accept = true
 }
 
