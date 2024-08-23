@@ -203,9 +203,9 @@ resource "aws_vpc_peering_connection" "peering" {
   }
 }
 
-#Adding route to default for dev vpc route
+#Adding route to default vpc route table for dev vpc tunnling
 resource "aws_route" "r" {
   route_table_id            = var.default_vpc_rt
-  destination_cidr_block    = var.default_vpc_cidr
+  destination_cidr_block    = var.cidr
   vpc_peering_connection_id = aws_vpc_peering_connection.peering.id
 }
