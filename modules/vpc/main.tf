@@ -196,5 +196,10 @@ resource "aws_vpc_peering_connection" "peering" {
   peer_vpc_id   = aws_vpc.main.id # target
   vpc_id        = var.default_vpc_id #request vpc
   auto_accept = true
+
+  tags = {
+    Name = "Default-vpc-to-Dev-vpc"
+
+  }
 }
 
