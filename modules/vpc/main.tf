@@ -148,7 +148,6 @@ resource "aws_internet_gateway" "igw" {
 
 resource "aws_eip" "ngw-ip" {
   count   = length(var.availability_zones)
-  instance = aws_instance.web.id
   domain   = "vpc"
 }
 
