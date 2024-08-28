@@ -32,6 +32,7 @@ module "apps" {
   env = var.env
   bastion_node = var.bastion_node
   asg          = true
+  vault_token = var.vault_token
 }
 
 #refering to vpc module output
@@ -40,21 +41,21 @@ output "web" {
 
 }
 
-# module "db" {
-#   source = "./modules/ec2"
-#
-#   for_each = var.db
-#   name = each.key
-#   instance_type = each.value["instance_type"]
-#   allow_port = each.value["allow_port"]
-#   allow_sg_cidr = each.value["allow_sg_cidr"]
-#   #below value comes from vpc module outputs
-#   #subnet      = module.vpc.subnets["web"][0]
-#   subnet_ids      = module.vpc.subnets[each.value["subnet_ref"]]
-#   #below value comes from vpc module outputs
-#   vpc_id    = module.vpc.vpc_id
-#   env = var.env
-#   bastion_node = var.bastion_node
-#   asg          = false
-# }
+module "db" {
+  source = "./modules/ec2"
+
+  for_each = var.db
+  name = each.key
+  instance_type = each.value["instance_type"]
+  allow_port = each.value["allow_port"]
+  allow_sg_cidr = each.value["allow_sg_cidr"]
+  #below value comes from vpc module outputs
+  #subnet      = module.vpc.subnets["web"][0]
+  subnet_ids      = module.vpc.subnets[each.value["subnet_ref"]]
+  #below value comes from vpc module outputs
+  vpc_id    = module.vpc.vpc_id
+  env = var.env
+  bastion_node = var.bastion_node
+  asg          = false
+}
 

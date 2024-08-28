@@ -19,11 +19,11 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Terraform init
-        run: terraform init -backend-config=env-dev/state.tfvars
+        run: terraform init -backend-config=env-dev/state.tfvars -var vault_token=${{ secrets.VAULT_TOKEN }}
 #      - name: Terraform plan
 #        run: terraform plan -var-file=env-dev/main.tfvars
       - name: Terraform destroy
-        run: terraform destroy -var-file=env-dev/main.tfvars -auto-approve
+        run: terraform destroy -var-file=env-dev/main.tfvars -auto-approve -var vault_token=${{ secrets.VAULT_TOKEN }}
 
 #  Dev-Apply:
 #    #runs-on: ubuntu-latest

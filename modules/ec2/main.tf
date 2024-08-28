@@ -52,6 +52,7 @@ resource "aws_autoscaling_group" "main" {
   vpc_zone_identifier = var.subnet_ids
 
   launch_template {
+    #aws_launch_template.main.*.id[0] = meaning first one from the list
     id      = aws_launch_template.main.*.id[0]
     version = "$Latest"
   }
@@ -59,5 +60,25 @@ resource "aws_autoscaling_group" "main" {
     key                 = "Name"
     propagate_at_launch = true
     value               = "${var.name}-${var.env}"
+  }
+}
+
+#instance are for database components and creates based var.asg condition
+resource "aws_instance" "main" {
+  count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
+  ami           = data.aws_ami.ami.image_id
+  instance_type = var.instance_type
+  #var.subnet_ids[0] = meaning first one from the list
+  subnet_id = var.subnet_ids[0]
+  vpc_security_group_ids = [aws_security_group.allow_tls.id]
+  user_data   = base64encode(templatefile("${path.module}/userdata.sh", {
+    env       = var.env
+    role_name       = var.name
+    vault_token   = var.vault_token
+
+  }))
+
+  tags = {
+    Name = "${var.name}-${var.env}"
   }
 }

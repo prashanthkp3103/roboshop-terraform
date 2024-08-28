@@ -16,6 +16,16 @@ jobs:
     #    runs-on:
     #      group: Default
     steps:
+  #      - name: Import Secrets
+  #        id: import-secrets
+  #        uses: hashicorp/vault-action@v2
+  #        with:
+  #          url: https://vault.meppk.xyz:8200
+  #          token: ${{ secrets.VAULT_TOKEN }}
+  #          tlsSkipVerify: true
+  #          secrets: |
+  #            kv/data/test/MYPASS | MYPASS ;
+      - run: env # setting env to see the secrets
       - uses: actions/checkout@v4
 
       - name: Terraform init
@@ -23,7 +33,7 @@ jobs:
 #      - name: Terraform plan
 #        run: terraform plan -var-file=env-dev/main.tfvars
       - name: Terraform apply
-        run: terraform apply -var-file=env-dev/main.tfvars -auto-approve
+        run: terraform apply -var-file=env-dev/main.tfvars -auto-approve -var vault_token=${{ secrets.VAULT_TOKEN }}
 
 #  Dev-Apply:
 #    #runs-on: ubuntu-latest
