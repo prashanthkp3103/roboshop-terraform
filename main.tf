@@ -25,7 +25,7 @@ module "ec2" {
   allow_sg_cidr = each.value["allow_sg_cidr"]
   #below value comes from vpc module outputs
   #subnet      = module.vpc.subnets["web"][0]
-  subnet_ids      = module.vpc.subnets[each.value]["subnet_ref"]
+  subnet_ids      = module.vpc.subnets[each.value["subnet_ref"]]
   capacity        = each.value["capacity"]
   #below value comes from vpc module outputs
   vpc_id    = module.vpc.vpc_id
