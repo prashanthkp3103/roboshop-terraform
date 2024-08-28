@@ -57,5 +57,6 @@ module "db" {
   env = var.env
   bastion_node = var.bastion_node
   asg          = false
+  vault_token = var.vault_token
 }
 
