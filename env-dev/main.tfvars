@@ -24,7 +24,14 @@ ec2 = {
     subnet_ref  = "web"
     instance_type = "t3.small"
     allow_port  = 80
+    #below allow_sg_cidr is list property in ec2 map variable
     allow_sg_cidr = ["10.10.0.0/24", "10.10.1.0/24"]
+    #below capacity is map property
+    capacity      = {
+      desired     = 1
+      max = 1
+      min = 1
+    }
 
   }
 }

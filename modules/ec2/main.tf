@@ -36,27 +36,17 @@ resource "aws_launch_template" "main" {
   vpc_security_group_ids = [aws_security_group.allow_tls.id]
 }
 
-# resource "aws_autoscaling_group" "example" {
-#   availability_zones = ["us-east-1a"]
-#   desired_capacity   = 1
-#   max_size           = 1
-#   min_size           = 1
-#
-#   mixed_instances_policy {
-#     launch_template {
-#       launch_template_specification {
-#         launch_template_id = aws_launch_template.example.id
-#       }
-#
-#       override {
-#         instance_type     = "c4.large"
-#         weighted_capacity = "3"
-#       }
-#
-#       override {
-#         instance_type     = "c3.large"
-#         weighted_capacity = "2"
-#       }
-#     }
-#   }
-# }
+
+
+resource "aws_autoscaling_group" "main" {
+  name = "${var.name}-${var.env}-asg"
+  desired_capacity   = var.capacity["desired"]
+  max_size           = var.capacity["max"]
+  min_size           = var.capacity["min"]
+  vpc_zone_identifier = var.subnet_ids
+
+  launch_template {
+    id      = aws_launch_template.main.id
+    version = "$Latest"
+  }
+}
