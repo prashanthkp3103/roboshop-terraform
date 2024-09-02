@@ -110,7 +110,7 @@ db = {
   mongo = {
     subnet_ref  = "db"
     instance_type = "t3.small"
-    allow_port  = 27107
+    allow_port  = 27017
     #allowing only app subnets
     allow_sg_cidr = ["10.10.4.0/24", "10.10.5.0/24"]
   }
