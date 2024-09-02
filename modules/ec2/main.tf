@@ -29,23 +29,23 @@ resource "aws_security_group" "allow_tls" {
   }
 }
 
-resource "aws_security_group" "lb" {
-  #this lb should be created when asg is created
-  count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
-  name        = "${var.name}-${var.env}-alb-sg"
-  description = "${var.name}-${var.env}-alb-sg  "
-  vpc_id      = var.vpc_id
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = var.allow_sg_cidr
-  }
-  tags = {
-    Name = "${var.name}-${var.env}-alb-sg"
-  }
-}
+# resource "aws_security_group" "lb" {
+#   #this lb should be created when asg is created
+#   count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
+#   name        = "${var.name}-${var.env}-alb-sg"
+#   description = "${var.name}-${var.env}-alb-sg  "
+#   vpc_id      = var.vpc_id
+#
+#   ingress {
+#     from_port   = 80
+#     to_port     = 80
+#     protocol    = "tcp"
+#     cidr_blocks = var.allow_sg_cidr
+#   }
+#   tags = {
+#     Name = "${var.name}-${var.env}-alb-sg"
+#   }
+# }
 
 resource "aws_launch_template" "main" {
   count   = var.asg ? 1 : 0  #if var.asg is true then 1(create) else 0(dont create)
@@ -87,7 +87,7 @@ resource "aws_autoscaling_group" "main" {
   }
 }
 
-#instance are for database components and creates based var.asg condition
+#instances are for database components and creates based var.asg condition
 resource "aws_instance" "main" {
   count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
   ami           = data.aws_ami.ami.image_id
@@ -108,7 +108,7 @@ resource "aws_instance" "main" {
 }
 
 resource "aws_route53_record" "www" {
-  count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
+  count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create) - o false -1 true
   zone_id = var.zone_id
   name    = "${var.name}.${var.env}"
   type    = "A"
@@ -116,34 +116,34 @@ resource "aws_route53_record" "www" {
   records = [aws_instance.main.*.private_ip[count.index]]
 }
 
-
-resource "aws_lb" "lb" {
-  #this lb should be created when asg is created
-  count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
-  name               = "${var.name}-${var.env}"
-  internal           = true
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.lb.*.id[count.index]]
-  subnets            = var.subnet_ids
-
-  #enable_deletion_protection = true
-
-#   access_logs {
-#     bucket  = aws_s3_bucket.lb_logs.id
-#     prefix  = "test-lb"
-#     enabled = true
+#creating internal load balancer for each application component
+# resource "aws_lb" "lb" {
+#   #this lb should be created when asg is created
+#   count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
+#   name               = "${var.name}-${var.env}"
+#   internal           = true
+#   load_balancer_type = "application"
+#   security_groups    = [aws_security_group.lb.*.id[count.index]]
+#   subnets            = var.subnet_ids
+#
+#   #enable_deletion_protection = true
+#
+# #   access_logs {
+# #     bucket  = aws_s3_bucket.lb_logs.id
+# #     prefix  = "test-lb"
+# #     enabled = true
+# #   }
+#
+#   tags = {
+#     Environment = "${var.name}-${var.env}-alb-sg"
 #   }
+# }
 
-  tags = {
-    Environment = "${var.name}-${var.env}-alb-sg"
-  }
-}
-
-resource "aws_lb_target_group" "main" {
-  #this lb should be created when asg is created
-  count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
-  name        = "${var.name}-${var.env}-alb-tg"
-  port        = var.allow_port
-  protocol    = "HTTP"
-  vpc_id      = var.vpc_id
-}
+# resource "aws_lb_target_group" "main" {
+#   #this lb should be created when asg is created
+#   count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
+#   name        = "${var.name}-${var.env}-alb-tg"
+#   port        = var.allow_port
+#   protocol    = "HTTP"
+#   vpc_id      = var.vpc_id
+# }
