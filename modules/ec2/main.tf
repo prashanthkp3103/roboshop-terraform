@@ -29,6 +29,24 @@ resource "aws_security_group" "allow_tls" {
   }
 }
 
+resource "aws_security_group" "lb" {
+  #this lb should be created when asg is created
+  count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
+  name        = "${var.name}-${var.env}-alb-sg"
+  description = "${var.name}-${var.env}-alb-sg  "
+  vpc_id      = var.vpc_id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = var.allow_sg_cidr
+  }
+  tags = {
+    Name = "${var.name}-${var.env}-alb-sg"
+  }
+}
+
 resource "aws_launch_template" "main" {
   count   = var.asg ? 1 : 0  #if var.asg is true then 1(create) else 0(dont create)
   name = "${var.name}-${var.env}"
@@ -96,4 +114,27 @@ resource "aws_route53_record" "www" {
   type    = "A"
   ttl     = 10
   records = [aws_instance.main.*.private_ip[count.index]]
+}
+
+
+resource "aws_lb" "test" {
+  #this lb should be created when asg is created
+  count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
+  name               = "${var.name}.${var.env}"
+  internal           = true
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.lb.*.id[count.index]]
+  subnets            = var.subnet_ids
+
+  #enable_deletion_protection = true
+
+#   access_logs {
+#     bucket  = aws_s3_bucket.lb_logs.id
+#     prefix  = "test-lb"
+#     enabled = true
+#   }
+
+  tags = {
+    Environment = "${var.name}.${var.env}"
+  }
 }
