@@ -117,10 +117,10 @@ resource "aws_route53_record" "www" {
 }
 
 
-resource "aws_lb" "test" {
+resource "aws_lb" "lb" {
   #this lb should be created when asg is created
   count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
-  name               = "${var.name}.${var.env}"
+  name               = "${var.name}-{var.env}"
   internal           = true
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb.*.id[count.index]]
@@ -135,6 +135,6 @@ resource "aws_lb" "test" {
 #   }
 
   tags = {
-    Environment = "${var.name}.${var.env}"
+    Environment = "${var.name}-${var.env}"
   }
 }
