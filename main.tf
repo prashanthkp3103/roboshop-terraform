@@ -34,6 +34,7 @@ module "apps" {
   bastion_node = var.bastion_node
   asg          = true
   vault_token = var.vault_token
+  zone_id     = var.zone_id
 }
 
 #refering to vpc module output
@@ -60,5 +61,6 @@ module "db" {
   bastion_node = var.bastion_node
   asg          = false
   vault_token = var.vault_token
+  zone_id     = var.zone_id
 }
 
