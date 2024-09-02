@@ -16,7 +16,7 @@ module "vpc" {
 }
 
 module "apps" {
-  depends_on = [module.db]
+  depends_on = [module.db, module.vpc]
   source = "./modules/ec2"
 
   for_each = var.apps
@@ -43,6 +43,7 @@ output "web" {
 }
 
 module "db" {
+  depends_on = [module.vpc]
   source = "./modules/ec2"
 
   for_each = var.db
