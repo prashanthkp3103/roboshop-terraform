@@ -158,7 +158,7 @@ resource "aws_lb_target_group" "main" {
 resource "aws_lb_listener" "lb_listener" {
   #this lb should be created when asg is created
   count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
-  load_balancer_arn = aws_lb.lb.arn
+  load_balancer_arn = aws_lb.lb.*.arn[count.index]
   port              = "80"
   protocol          = "HTTP"
 
