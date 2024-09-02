@@ -57,9 +57,9 @@ resource "aws_autoscaling_group" "main" {
   max_size           = var.capacity["max"]
   min_size           = var.capacity["min"]
   vpc_zone_identifier = var.subnet_ids
-  #below 2 properties of LB for asg tg
+  #below 1 property is  of LB for asg tg
   target_group_arns = [aws_lb_target_group.main.*.arn[count.index]]
-  load_balancers = [aws_lb.lb.*.arn[count.index]]
+
 
   launch_template {
     #aws_launch_template.main.*.id[0] = meaning first one from the list
@@ -152,4 +152,18 @@ resource "aws_lb_target_group" "main" {
   port        = var.allow_port
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
+}
+
+
+resource "aws_lb_listener" "lb_listener" {
+  #this lb should be created when asg is created
+  count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
+  load_balancer_arn = aws_lb.lb.arn
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.main.*.arn[count.index]
+  }
 }
