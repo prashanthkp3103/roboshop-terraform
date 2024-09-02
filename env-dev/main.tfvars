@@ -106,36 +106,36 @@ apps = {
 
 }
 
-db = {
-  mongo = {
-    subnet_ref  = "db"
-    instance_type = "t3.small"
-    allow_port  = 27017
-    #allowing only app subnets
-    allow_sg_cidr = ["10.10.4.0/24", "10.10.5.0/24"]
-  }
-  mysql = {
-    subnet_ref  = "db"
-    instance_type = "t3.small"
-    allow_port  = 3306
-    allow_sg_cidr = ["10.10.4.0/24", "10.10.5.0/24"]
-
-  }
-  rabbimq = {
-    subnet_ref  = "db"
-    instance_type = "t3.small"
-    allow_port  = 5672
-    allow_sg_cidr = ["10.10.4.0/24", "10.10.5.0/24"]
-  }
-
-  redis = {
-    subnet_ref  = "db"
-    instance_type = "t3.small"
-    allow_port  = 6379
-    allow_sg_cidr = ["10.10.4.0/24", "10.10.5.0/24"]
-  }
-
-}
+# db = {
+#   mongo = {
+#     subnet_ref  = "db"
+#     instance_type = "t3.small"
+#     allow_port  = 27017
+#     #allowing only app subnets
+#     allow_sg_cidr = ["10.10.4.0/24", "10.10.5.0/24"]
+#   }
+#   mysql = {
+#     subnet_ref  = "db"
+#     instance_type = "t3.small"
+#     allow_port  = 3306
+#     allow_sg_cidr = ["10.10.4.0/24", "10.10.5.0/24"]
+#
+#   }
+#   rabbimq = {
+#     subnet_ref  = "db"
+#     instance_type = "t3.small"
+#     allow_port  = 5672
+#     allow_sg_cidr = ["10.10.4.0/24", "10.10.5.0/24"]
+#   }
+#
+#   redis = {
+#     subnet_ref  = "db"
+#     instance_type = "t3.small"
+#     allow_port  = 6379
+#     allow_sg_cidr = ["10.10.4.0/24", "10.10.5.0/24"]
+#   }
+#
+# }
 
 
 
