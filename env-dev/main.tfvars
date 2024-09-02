@@ -28,7 +28,7 @@ apps = {
     allow_port  = 80
     #below allow_sg_cidr is list property in ec2 map variable
     ##allowing only public subnets
-    allow_sg_cidr = ["10.10.2.0/24", "10.10.3.0/24"]
+    allow_sg_cidr = ["10.10.0.0/24", "10.10.1.0/24"]
     #below capacity is map property
     capacity      = {
       desired     = 1
