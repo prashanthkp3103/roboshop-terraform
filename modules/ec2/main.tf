@@ -14,7 +14,8 @@ resource "aws_security_group" "allow_tls" {
     from_port   = var.allow_port
     to_port     = var.allow_port
     protocol    = "tcp"
-    cidr_blocks = var.allow_sg_cidr
+    #below condition is frontend will public access and allow sg_cidr as well
+    cidr_blocks = var.name == "frontend" ? ["0.0.0.0/0"] : var.allow_sg_cidr
   }
 
   egress {
