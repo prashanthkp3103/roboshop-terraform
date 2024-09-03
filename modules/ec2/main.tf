@@ -106,7 +106,7 @@ resource "aws_route53_record" "www" {
 #this is for LB and opening 80 port
 resource "aws_security_group" "lb" {
   #this lb should be created when asg is created
-  count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
+  count = var.asg ? 1 : 0  #if var.asg is false then 0(create) else 1(dont create)
   name        = "${var.name}-${var.env}-alb-sg"
   description = "${var.name}-${var.env}-alb-sg  "
   vpc_id      = var.vpc_id
@@ -125,7 +125,7 @@ resource "aws_security_group" "lb" {
 #creating application internal load balancer for each application component
 resource "aws_lb" "lb" {
   #this lb should be created when asg is created
-  count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create) 0-false 1-true
+  count = var.asg ? 1 : 0  #if var.asg is false then 0(create) else 1(dont create) 0-false 1-true
   name               = "${var.name}-${var.env}"
   internal           = var.internal
   load_balancer_type = "application"
@@ -158,7 +158,7 @@ resource "aws_lb_target_group" "main" {
 #any request is coming with 80 port sending the traffic to target group
 resource "aws_lb_listener" "lb_listener" {
   #this lb should be created when asg is created
-  count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
+  count = var.asg ? 1 : 0  #if var.asg is false then 0(create) else 1(dont create)
   load_balancer_arn = aws_lb.lb.*.arn[count.index]
   port              = "80"
   protocol          = "HTTP"
