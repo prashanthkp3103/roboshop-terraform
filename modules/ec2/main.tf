@@ -148,7 +148,7 @@ resource "aws_lb" "lb" {
 #LB target group - target group will have list of instances
 resource "aws_lb_target_group" "main" {
   #this lb should be created when asg is created
-  count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
+  count = var.asg ? 1 : 0  #if var.asg is false then 0(create) else 1(dont create)
   name        = "${var.name}-${var.env}-alb-tg"
   port        = var.allow_port
   protocol    = "HTTP"

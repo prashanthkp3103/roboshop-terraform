@@ -38,6 +38,7 @@ apps = {
     }
     #this property is for lb (whether it is internal(meaning intranet) or internet=false(meaning it is internet)
     lb_internal   = false
+    #below public property is output of vpc subnets "public" refer to vpc outputs public it will be subnet ids
     lb_subnet_ref     = "public"
 
   }
@@ -56,6 +57,7 @@ apps = {
       min = 1
     }
     lb_internal   = true
+    #below app property is output of vpc subnets "app" refer to vpc outputs app it will be subnet ids
     lb_subnet_ref     = "app"
 
   }
