@@ -21,3 +21,6 @@ variable "internal" {
 variable "lb_subnet_ids" {
   default = []
 }
+variable "allow_lb_sg_cidr" {
+  default = []
+}

@@ -15,7 +15,7 @@ resource "aws_security_group" "allow_tls" {
     to_port     = var.allow_port
     protocol    = "tcp"
     #below condition is frontend will public access and allow sg_cidr as well
-    cidr_blocks = var.name == "frontend" ? ["0.0.0.0/0"] : var.allow_sg_cidr
+    cidr_blocks = var.allow_sg_cidr
   }
 
   egress {
@@ -115,7 +115,7 @@ resource "aws_security_group" "lb" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = var.allow_sg_cidr
+    cidr_blocks = var.allow_lb_sg_cidr
   }
   tags = {
     Name = "${var.name}-${var.env}-alb-sg"
