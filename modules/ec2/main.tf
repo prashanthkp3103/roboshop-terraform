@@ -181,7 +181,7 @@ resource "aws_lb_listener" "lb_listener" {
 ##
 
 resource "aws_route53_record" "lb" {
-  count = var.asg ? 1 : o  #if var.asg is true then 1(create) else 0(dont create) - 0 false -1 true
+  count = var.asg ? 1 : 0 #if var.asg is true then 1(create) else 0(dont create) - 0 false -1 true
   zone_id = var.zone_id
   name    = "${var.name}.${var.env}"
   type    = "CNAME"
