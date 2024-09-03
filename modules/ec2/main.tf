@@ -160,6 +160,7 @@ resource "aws_lb_target_group" "main" {
     unhealthy_threshold = 2 #health is bad
     interval = 5 #seconds
     path = "/health"  #path we are checking is /health
+    timeout = 3 #i hit /health i will wait for 3sec and say it is healthy or not healthy
   }
 }
 
