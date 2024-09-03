@@ -7,6 +7,7 @@ bastion_node = ["172.31.16.106/32"]
 
 zone_id       = "Z0668859214N41P8Y7GLH"
 
+
 #this is map variable
 vpc = {
   cidr = "10.10.0.0/16"
@@ -35,6 +36,9 @@ apps = {
       max = 1
       min = 1
     }
+    #this property is for lb (whether it is internal(meaning intranet) or internet=false(meaning it is internet)
+    lb_internal   = false
+    lb_subnet_ref     = "public"
 
   }
 
@@ -51,6 +55,8 @@ apps = {
       max = 1
       min = 1
     }
+    lb_internal   = true
+    lb_subnet_ref     = "app"
 
   }
 
