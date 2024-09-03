@@ -36,7 +36,7 @@ module "apps" {
   vault_token = var.vault_token
   zone_id     = var.zone_id
   #below property for lb
-  internal    = each.value[lb_internal]
+  internal    = each.value["lb_internal"]
   lb_subnet_ids    = module.vpc.subnets[each.value["lb_subnet_ref"]]
 }
 
