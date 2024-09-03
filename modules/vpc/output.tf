@@ -23,6 +23,7 @@ output "subnets" {
     "web" =  aws_subnet.web.*.id
     "app" =  aws_subnet.app.*.id
     "db"  = aws_subnet.db.*.id
+    "public" = aws_subnet.public.*.id
 
     })
 }
