@@ -38,7 +38,6 @@ module "apps" {
   #below property for lb
   internal      = each.value["lb_internal"]
   lb_subnet_ids = module.vpc.subnets[each.value["lb_subnet_ref"]]
-
 }
 
 #refering to vpc module output
