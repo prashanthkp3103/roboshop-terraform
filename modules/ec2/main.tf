@@ -153,6 +153,14 @@ resource "aws_lb_target_group" "main" {
   port        = var.allow_port
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
+
+  health_check {
+    enabled = true
+    healthy_threshold = 2 #health is good
+    unhealthy_threshold = 2 #health is bad
+    interval = 5 #seconds
+    path = "/health"  #path we are checking is /health
+  }
 }
 
 #any request is coming with 80 port sending the traffic to target group
