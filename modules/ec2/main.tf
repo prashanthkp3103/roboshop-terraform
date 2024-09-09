@@ -100,8 +100,8 @@ resource "aws_route53_record" "www" {
   name    = "${var.name}.${var.env}"
   type    = "A"
   ttl     = 10
-  #records = [aws_instance.main.*.private_ip[count.index]]
-  records = [aws_instance.main.private_ip]
+  records = [aws_instance.main.*.private_ip[count.index]]
+  #records = [aws_instance.main.private_ip]
 }
 
 #this is for LB and opening 80 port
