@@ -30,6 +30,7 @@ resource "aws_security_group" "allow_tls" {
   }
 }
 
+#creates launch template based asg variable true or false
 resource "aws_launch_template" "main" {
   count   = var.asg ? 1 : 0  #if var.asg is true then 1(create) else 0(dont create)
   name = "${var.name}-${var.env}"
@@ -75,6 +76,7 @@ resource "aws_autoscaling_group" "main" {
 }
 
 #instances are for database components and creates based var.asg condition
+#creates multiple instances based asg variable true or false
 resource "aws_instance" "main" {
   count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
   ami           = data.aws_ami.ami.image_id
@@ -94,6 +96,7 @@ resource "aws_instance" "main" {
   }
 }
 
+#creates multiple records based asg variable true or false
 resource "aws_route53_record" "www" {
   count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create) - o false -1 true
   zone_id = var.zone_id
@@ -105,6 +108,7 @@ resource "aws_route53_record" "www" {
 }
 
 #this is for LB and opening 80 port
+#creates multiple sg based asg variable true or false
 resource "aws_security_group" "lb" {
   #this lb should be created when asg is created
   count = var.asg ? 1 : 0  #if var.asg is false then 0(create) else 1(dont create)
@@ -124,6 +128,7 @@ resource "aws_security_group" "lb" {
 }
 
 #creating application internal load balancer for each application component
+#creates multiple internal lb based asg variable true or false for backend components
 resource "aws_lb" "lb" {
   #this lb should be created when asg is created
   count = var.asg ? 1 : 0  #if var.asg is false then 0(create) else 1(dont create) 0-false 1-true
@@ -147,6 +152,7 @@ resource "aws_lb" "lb" {
 }
 
 #LB target group - target group will have list of instances
+#created multiple instances would be part of target group
 resource "aws_lb_target_group" "main" {
   #this lb should be created when asg is created
   count = var.asg ? 1 : 0  #if var.asg is false then 0(create) else 1(dont create)
@@ -166,6 +172,7 @@ resource "aws_lb_target_group" "main" {
 }
 
 #any request is coming with 80 port sending the traffic to target group
+#creates multiple listeners based asg variable true or false
 resource "aws_lb_listener" "lb_listener" {
   #this lb should be created when asg is created
   count = var.asg ? 1 : 0  #if var.asg is false then 0(create) else 1(dont create)
@@ -181,6 +188,7 @@ resource "aws_lb_listener" "lb_listener" {
 
 ##
 
+#creates multiple records based asg variable true or false
 resource "aws_route53_record" "lb" {
   count = var.asg ? 1 : 0 #if var.asg is true then 1(create) else 0(dont create) - 0 false -1 true
   zone_id = var.zone_id

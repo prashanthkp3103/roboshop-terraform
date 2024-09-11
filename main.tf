@@ -1,6 +1,6 @@
 module "vpc" {
   source = "./modules/vpc"
-  cidr = var.vpc["cidr"]
+  cidr = var.vpc["cidr"]  #this comes from dev main.tfvars variables vpc cidr
   env = var.env
   #Referring to map variable
   public_subnets = var.vpc["public_subnets"]
@@ -19,8 +19,15 @@ module "apps" {
   depends_on = [module.db, module.vpc]
   source = "./modules/ec2"
 
-  for_each      = var.apps
-  name          = each.key
+  for_each      = var.apps  #this comes from dev main.tfvars
+  #In the below code each.key is catalogue(for name)
+ # apps = {
+ #   catalogue = {
+ #     instance_type = ""
+  #  }
+  #}
+  #it is coming from main.tfvars in env-dev
+  name          = each.key  #this comes from dev main.tfvars apps
   instance_type = each.value["instance_type"]
   allow_port    = each.value["allow_port"]
   allow_sg_cidr = each.value["allow_sg_cidr"]
@@ -52,8 +59,8 @@ module "db" {
   depends_on = [module.vpc]
   source = "./modules/ec2"
 
-  for_each = var.db
-  name = each.key
+  for_each = var.db #this comes from dev main.tfvars
+  name = each.key  #this comes from dev main.tfvars db
   instance_type = each.value["instance_type"]
   allow_port = each.value["allow_port"]
   allow_sg_cidr = each.value["allow_sg_cidr"]
