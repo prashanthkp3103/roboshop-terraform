@@ -163,7 +163,7 @@ resource "aws_lb" "lb" {
     Environment = "${var.name}-${var.env}-alb-sg"
   }
 }
-
+##
 #LB target group - target group will have list of instances
 #created multiple instances would be part of target group
 resource "aws_lb_target_group" "main" {
