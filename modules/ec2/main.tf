@@ -30,9 +30,10 @@ resource "aws_security_group" "allow_tls" {
   }
 }
 
+#this requires for Auto scaling
 #creates launch template based asg variable true or false
 resource "aws_launch_template" "main" {
-  count   = var.asg ? 1 : 0  #if var.asg is true then 1(create) else 0(dont create)
+  count   = var.asg ? 1 : 0  #if var.asg creation is true then 1(create) else 0(dont create)
   name = "${var.name}-${var.env}"
   image_id      = data.aws_ami.ami.id
   instance_type = var.instance_type
@@ -51,7 +52,7 @@ resource "aws_launch_template" "main" {
 }
 
 
-
+#this requires for Auto scaling
 resource "aws_autoscaling_group" "main" {
   count   = var.asg ? 1 : 0  #if var.asg is true then 1(create) else 0(dont create)
   name = "${var.name}-${var.env}-asg"
@@ -60,6 +61,7 @@ resource "aws_autoscaling_group" "main" {
   min_size           = var.capacity["min"]
   vpc_zone_identifier = var.subnet_ids
   #below 1 property is  of LB for asg tg
+  # Here we are loading Lb, and we can also load Target groups as well
   target_group_arns = [aws_lb_target_group.main.*.arn[count.index]]
 
 
@@ -98,7 +100,7 @@ resource "aws_instance" "main" {
 
 #creates multiple records based asg variable true or false
 resource "aws_route53_record" "www" {
-  count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create) - o false -1 true
+  count = var.asg ? 0 : 1  #if var.asg creation is false then 0(create) else 1(dont create) - o false -1 true
   zone_id = var.zone_id
   name    = "${var.name}.${var.env}"
   type    = "A"
@@ -127,6 +129,7 @@ resource "aws_security_group" "lb" {
   }
 }
 
+#LB properties starts here
 #creating application internal load balancer for each application component
 #creates multiple internal lb based asg variable true or false for backend components
 resource "aws_lb" "lb" {
@@ -155,7 +158,7 @@ resource "aws_lb" "lb" {
 #created multiple instances would be part of target group
 resource "aws_lb_target_group" "main" {
   #this lb should be created when asg is created
-  count = var.asg ? 1 : 0  #if var.asg is false then 0(create) else 1(dont create)
+  count = var.asg ? 1 : 0  #if var.asg creation is false then 0(create) else 1(dont create)
   name        = "${var.name}-${var.env}-alb-tg"
   port        = var.allow_port
   protocol    = "HTTP"
@@ -180,6 +183,7 @@ resource "aws_lb_listener" "lb_listener" {
   port              = "80"
   protocol          = "HTTP"
 
+  #below is for sending the traffic to lb target groups
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.main.*.arn[count.index]
