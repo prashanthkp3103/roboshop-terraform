@@ -45,6 +45,7 @@ apps = {
 
   }
 
+  #
   catalogue = {
     subnet_ref  = "app"
     instance_type = "t3.small"
