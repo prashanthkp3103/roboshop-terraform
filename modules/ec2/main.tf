@@ -130,9 +130,9 @@ resource "aws_security_group" "lb" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    #cidr_blocks = var.allow_lb_sg_cidr
+    cidr_blocks = var.allow_lb_sg_cidr
     #below condition is if var.name = frontend then public other wise have var.allow_lb_sg_cidr
-    cidr_blocks = var.name == "frontend" ? ["0.0.0.0/0"] : var.allow_lb_sg_cidr
+    #cidr_blocks = var.name == "frontend" ? ["0.0.0.0/0"] : var.allow_lb_sg_cidr
   }
   tags = {
     Name = "${var.name}-${var.env}-alb-sg"

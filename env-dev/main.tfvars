@@ -50,7 +50,7 @@ apps = {
     instance_type = "t3.small"
     allow_port  = 8080
     #below allow_sg_cidr is list property in ec2 map variable
-    ##allowing only app subnets
+    ##allowing only app subnets #reason for allowing multiple subnet is for communication lb to asg
     allow_sg_cidr    = ["10.10.4.0/24", "10.10.5.0/24"] #application should accessible by these #
     allow_lb_sg_cidr = ["10.10.2.0/24", "10.10.3.0/24", "10.10.4.0/24", "10.10.5.0/24"] #Lb should accessible by these #web
     #below capacity is map property
