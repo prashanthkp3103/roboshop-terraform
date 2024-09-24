@@ -33,7 +33,7 @@ resource "aws_security_group" "allow_tls" {
 #instances are for database components and creates based var.asg condition
 #creates multiple instances based asg variable true or false
 resource "aws_instance" "main" {
-  count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
+  #count = var.asg ? 0 : 1  #if var.asg is false then 0(create) else 1(dont create)
   ami           = data.aws_ami.ami.image_id
   instance_type = var.instance_type
   #var.subnet_ids[0] = meaning first one from the list
