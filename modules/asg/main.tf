@@ -1,10 +1,10 @@
 #this is for LB and opening 80 port
 #creates multiple sg based asg variable true or false
-resource "aws_security_group" "lb" {
+resource "aws_security_group" "main" {
   #this lb should be created when asg is created
   #count = var.asg ? 1 : 0  #if var.asg is false then 0(create) else 1(dont create)
   name        = "${var.name}-${var.env}-alb-sg"
-  description = "${var.name}-${var.env}-alb-sg  "
+  description = "${var.name}-${var.env}-alb-sg"
   vpc_id      = var.vpc_id
 
   egress {
@@ -24,7 +24,7 @@ resource "aws_security_group" "lb" {
     #cidr_blocks = var.name == "frontend" ? ["0.0.0.0/0"] : var.allow_lb_sg_cidr
   }
   tags = {
-    Name = "${var.name}-${var.env}-alb-sg"
+    Name = "${var.name}-${var.env}-sg"
   }
 }
 
@@ -36,7 +36,7 @@ resource "aws_launch_template" "main" {
   name = "${var.name}-${var.env}"
   image_id      = data.aws_ami.ami.id
   instance_type = var.instance_type
-  vpc_security_group_ids = [aws_security_group.lb.id]
+  vpc_security_group_ids = [aws_security_group.main.id]
 
   user_data   = base64encode(templatefile("${path.module}/userdata.sh", {
     env       = var.env
@@ -77,6 +77,38 @@ resource "aws_autoscaling_group" "main" {
   }
 }
 
+resource "aws_security_group" "load-balancer" {
+  name        = "${var.name}-${var.env}-alb-sg"
+  description = "${var.name}-${var.env}-alb-sg"
+  vpc_id      = var.vpc_id
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "TCP"
+    cidr_blocks = var.allow_lb_sg_cidr
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "TCP"
+    cidr_blocks = var.allow_lb_sg_cidr
+  }
+
+  tags = {
+    Name = "${var.name}-${var.env}-alb-sg"
+  }
+}
+
 
 #LB properties starts here
 #creating application internal load balancer for each application component
@@ -88,7 +120,7 @@ resource "aws_lb" "lb" {
   internal           = var.internal
   load_balancer_type = "application"
   #security_groups    = [aws_security_group.lb.*.id[count.index]]
-  security_groups    = [aws_security_group.lb.id]
+  security_groups    = [aws_security_group.load-balancer.id]
   subnets            = var.lb_subnet_ids
 
   #   #enable_deletion_protection = true
