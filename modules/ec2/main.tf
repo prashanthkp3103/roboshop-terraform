@@ -186,6 +186,7 @@ resource "aws_lb_target_group" "main" {
 
 #any request is coming with 80 port sending the traffic to target group
 #creates multiple listeners based asg variable true or false
+#below is for frontend
 resource "aws_lb_listener" "lb_listener" {
   #this lb should be created when asg is created
   count = var.asg ? 1 : 0  #if var.asg is false then 0(create) else 1(dont create)
@@ -205,6 +206,7 @@ resource "aws_lb_listener" "lb_listener" {
 #creates multiple records based asg variable true or false
 #cname is alias name for lb
 #it will create alias names for all the load balancers (internal and external)
+#based on this only frontend gets started
 resource "aws_route53_record" "lb" {
   count = var.asg ? 1 : 0 #create if var.asg is true(created) then 1(create) else 0(dont create) - 0 false -1 true
   zone_id = var.zone_id
