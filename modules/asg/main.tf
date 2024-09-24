@@ -61,8 +61,8 @@ resource "aws_autoscaling_group" "main" {
   vpc_zone_identifier = var.subnet_ids
   #below 1 property is  of LB for asg tg
   # Here we are loading Lb, and we can also load Target groups as well
-  target_group_arns = [aws_lb_target_group.main.*.arn[count.index]]
-  #target_group_arns = [aws_lb_target_group.main.arn]
+  #target_group_arns = [aws_lb_target_group.main.*.arn[count.index]]
+  target_group_arns = [aws_lb_target_group.main.arn]
 
 
   launch_template {
