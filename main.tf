@@ -72,7 +72,7 @@ module "db" {
   vpc_id    = module.vpc.vpc_id
   env = var.env
   bastion_node = var.bastion_node
-  asg          = false
+  #asg          = false
   vault_token = var.vault_token
   zone_id     = var.zone_id
 }
