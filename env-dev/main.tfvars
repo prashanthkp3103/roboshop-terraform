@@ -8,6 +8,8 @@ bastion_node = ["172.31.16.106/32"]
 zone_id       = "Z0668859214N41P8Y7GLH"
 
 
+
+
 #this is map variable
 vpc = {
   cidr = "10.10.0.0/16"
@@ -42,6 +44,7 @@ apps = {
     #below public property is output of vpc subnets "public" refer to vpc outputs public it will be subnet ids
     #and Lb to create under public subnet
     lb_subnet_ref     = "public"
+    acm_http_arn  = "arn:aws:acm:us-east-1:261401039448:certificate/aad476c4-3bf6-4a6d-b536-d58c078b80fb"
 
   }
 
@@ -64,6 +67,7 @@ apps = {
     #below app property is output of vpc subnets "app" refer to vpc outputs app it will be subnet ids
     #and Lb to create under app subnet
     lb_subnet_ref     = "app"
+    acm_http_arn      = null
 
   }
 
@@ -85,6 +89,7 @@ apps = {
     #below app property is output of vpc subnets "app" refer to vpc outputs app it will be subnet ids
     #and Lb to create under app subnet
     lb_subnet_ref     = "app"
+    acm_http_arn      = null
 
   }
 
@@ -106,6 +111,7 @@ apps = {
     #below app property is output of vpc subnets "app" refer to vpc outputs app it will be subnet ids
     #and Lb to create under app subnet
     lb_subnet_ref     = "app"
+    acm_http_arn      = null
 
   }
 
@@ -127,6 +133,7 @@ apps = {
     #below app property is output of vpc subnets "app" refer to vpc outputs app it will be subnet ids
     #and Lb to create under app subnet
     lb_subnet_ref     = "app"
+    acm_http_arn      = null
 
   }
 
@@ -148,6 +155,7 @@ apps = {
     #below app property is output of vpc subnets "app" refer to vpc outputs app it will be subnet ids
     #and Lb to create under app subnet
     lb_subnet_ref     = "app"
+    acm_http_arn      = null
 
   }
 
@@ -169,6 +177,7 @@ apps = {
     #below app property is output of vpc subnets "app" refer to vpc outputs app it will be subnet ids
     #and Lb to create under app subnet
     lb_subnet_ref     = "app"
+    acm_http_arn      = null
 
   }
 

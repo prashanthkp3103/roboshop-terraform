@@ -17,7 +17,7 @@ module "vpc" {
 
 module "apps" {
   depends_on = [module.db, module.vpc]
-  source = "./modules/ec2"
+  source = "./modules/asg"
 
   for_each      = var.apps  #this comes from dev main.tfvars
   #In the below code each.key is catalogue(for name)
@@ -46,6 +46,7 @@ module "apps" {
   internal      = each.value["lb_internal"]
   lb_subnet_ids = module.vpc.subnets[each.value["lb_subnet_ref"]]
   allow_lb_sg_cidr = each.value["allow_lb_sg_cidr"]
+  acm_http_arn      = each.value["acm_http_arn"]
 
 }
 
