@@ -176,6 +176,26 @@ resource "aws_lb_listener" "internal-http" {
   }
 }
 
+resource "aws_lb_listener" "public-http" {
+  #this lb should be created when asg is created
+  count = var.internal ? 0 : 1  #if var.internal is true then 0(dont create) else 1 (create)
+  #load_balancer_arn = aws_lb.lb.*.arn[count.index]
+  load_balancer_arn = aws_lb.lb.arn
+  port              = "80"
+  protocol          = "HTTP"
+
+  #below is for sending the traffic to lb target groups
+  default_action {
+    type             = "redirect"
+    #target_group_arn = aws_lb_target_group.main.*.arn[count.index]
+    redirect {
+      port = "443"
+      protocol = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
 resource "aws_lb_listener" "public-https" {
   #this lb should be created when asg is created
   count = var.internal ? 0 : 1  #if var.internal is true then 0(dont create) else 1 (create)
