@@ -141,7 +141,7 @@ resource "aws_lb" "lb" {
 #created multiple instances would be part of target group
 resource "aws_lb_target_group" "main" {
   #this lb should be created when asg is created
-  count = var.asg ? 1 : 0  #if var.asg creation is false then 0(create) else 1(dont create)
+  #count = var.asg ? 1 : 0  #if var.asg creation is false then 0(create) else 1(dont create)
   name        = "${var.name}-${var.env}-alb-tg"
   port        = var.allow_port
   protocol    = "HTTP"
@@ -160,7 +160,7 @@ resource "aws_lb_target_group" "main" {
 #any request is coming with 80 port sending the traffic to target group
 #creates multiple listeners based asg variable true or false
 #below is for frontend
-resource "aws_lb_listener" "internalhttp" {
+resource "aws_lb_listener" "internal-http" {
   #this lb should be created when asg is created
   count = var.internal ? 1 : 0  #if var.internal is true then 1(create) else 0(dont create)
   #load_balancer_arn = aws_lb.lb.*.arn[count.index]
@@ -172,11 +172,11 @@ resource "aws_lb_listener" "internalhttp" {
   default_action {
     type             = "forward"
     #target_group_arn = aws_lb_target_group.main.*.arn[count.index]
-    target_group_arn = aws_lb_target_group.main.*.arn
+    target_group_arn = aws_lb_target_group.main.arn
   }
 }
 
-resource "aws_lb_listener" "publichttps" {
+resource "aws_lb_listener" "public-https" {
   #this lb should be created when asg is created
   count = var.internal ? 0 : 1  #if var.internal is true then 0(dont create) else 1 (create)
   #load_balancer_arn = aws_lb.lb.*.arn[count.index]
@@ -190,7 +190,7 @@ resource "aws_lb_listener" "publichttps" {
   default_action {
     type             = "forward"
     #target_group_arn = aws_lb_target_group.main.*.arn[count.index]
-    target_group_arn = aws_lb_target_group.main.*.arn
+    target_group_arn = aws_lb_target_group.main.arn
   }
 }
 
@@ -201,11 +201,12 @@ resource "aws_lb_listener" "publichttps" {
 #it will create alias names for all the load balancers (internal and external)
 #based on this only frontend gets started
 resource "aws_route53_record" "lb" {
-  count = var.asg ? 1 : 0 #create if var.asg is true(created) then 1(create) else 0(dont create) - 0 false -1 true
+  #count = var.asg ? 1 : 0 #create if var.asg is true(created) then 1(create) else 0(dont create) - 0 false -1 true
   zone_id = var.zone_id
   name    = "${var.name}.${var.env}"
   type    = "CNAME"
   ttl     = 10
-  records = [aws_lb.lb.*.dns_name[count.index]]
+  #records = [aws_lb.lb.*.dns_name[count.index]]
+  records = [aws_lb.lb.dns_name]
 }
 
