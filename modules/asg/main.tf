@@ -88,7 +88,7 @@ resource "aws_lb" "lb" {
   internal           = var.internal
   load_balancer_type = "application"
   #security_groups    = [aws_security_group.lb.*.id[count.index]]
-  security_groups    = [aws_security_group.lb.*.id]
+  security_groups    = [aws_security_group.lb.id]
   subnets            = var.lb_subnet_ids
 
   #   #enable_deletion_protection = true
