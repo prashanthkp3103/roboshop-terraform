@@ -1,5 +1,5 @@
-#this is for LB and opening 80 port
-#creates multiple sg based asg variable true or false
+
+##this is for App components where it will 22 from default vpc bastion and
 resource "aws_security_group" "main" {
   #this lb should be created when asg is created
   #count = var.asg ? 1 : 0  #if var.asg is false then 0(create) else 1(dont create)
@@ -16,12 +16,19 @@ resource "aws_security_group" "main" {
   }
 
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
     cidr_blocks = var.allow_lb_sg_cidr
     #below condition is if var.name = frontend then public other wise have var.allow_lb_sg_cidr
     #cidr_blocks = var.name == "frontend" ? ["0.0.0.0/0"] : var.allow_lb_sg_cidr
+  }
+
+  ingress {
+    from_port   = var.allow_port
+    to_port     = var.allow_port
+    protocol    = "TCP"
+    cidr_blocks = var.allow_sg_cidr
   }
   tags = {
     Name = "${var.name}-${var.env}-sg"

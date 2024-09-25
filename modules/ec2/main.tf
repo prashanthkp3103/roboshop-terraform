@@ -6,14 +6,14 @@ resource "aws_security_group" "allow_tls" {
   ingress {
     from_port   = 22
     to_port     = 22
-    protocol    = "tcp"
+    protocol    = "TCP"
     cidr_blocks = var.bastion_node
   }
 
   ingress {
     from_port   = var.allow_port
     to_port     = var.allow_port
-    protocol    = "tcp"
+    protocol    = "TCP"
     #below condition is frontend will public access and allow sg_cidr as well
     cidr_blocks = var.allow_sg_cidr
   }
