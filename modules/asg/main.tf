@@ -19,7 +19,7 @@ resource "aws_security_group" "main" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = var.allow_lb_sg_cidr
+    cidr_blocks =  var.bastion_node
     #below condition is if var.name = frontend then public other wise have var.allow_lb_sg_cidr
     #cidr_blocks = var.name == "frontend" ? ["0.0.0.0/0"] : var.allow_lb_sg_cidr
   }
