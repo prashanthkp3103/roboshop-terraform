@@ -3,8 +3,8 @@
 resource "aws_security_group" "main" {
   #this lb should be created when asg is created
   #count = var.asg ? 1 : 0  #if var.asg is false then 0(create) else 1(dont create)
-  name        = "${var.name}-${var.env}-alb-sg"
-  description = "${var.name}-${var.env}-alb-sg"
+  name        = "${var.name}-${var.env}-sg"
+  description = "${var.name}-${var.env}-sg"
   vpc_id      = var.vpc_id
 
   egress {

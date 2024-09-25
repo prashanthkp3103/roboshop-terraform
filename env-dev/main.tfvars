@@ -44,7 +44,7 @@ apps = {
     #below public property is output of vpc subnets "public" refer to vpc outputs public it will be subnet ids
     #and Lb to create under public subnet
     lb_subnet_ref     = "public"
-    acm_http_arn  = "arn:aws:acm:us-east-1:261401039448:certificate/aad476c4-3bf6-4a6d-b536-d58c078b80fb"
+    acm_http_arn  = "arn:aws:acm:us-east-1:261401039448:certificate/174aed8f-1258-49f5-a8ea-5a6a7be63e3f"
 
   }
 
